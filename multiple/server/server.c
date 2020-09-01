@@ -22,10 +22,14 @@ int main()
     pid_t pid;
     int lfd, cfd;
     struct sockaddr_in serv_addr, clie_addr;
-    lfd = Socket(AF_INET, SOCK_STREAM, 0);
     socklen_t clie_addr_len;
     char buf[BUFSIZ], clie_IP[BUFSIZ];
-    int n, i;
+    int n, i, opt;
+
+    lfd = Socket(AF_INET, SOCK_STREAM, 0);
+
+
+    setsockopt(lfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 
     bzero(&serv_addr, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
