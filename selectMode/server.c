@@ -13,11 +13,14 @@
 int main(int argc, char *argv[])
 {
     int listenfd, connfd, sockfd, maxfd;
+    //自定义数组client，防止遍历allset，FD_SETSIZE默认为1024
     int client[FD_SETSIZE];
     int i, j, n, maxi, nready, opt;
+    //#define INET_ADDRSTRLEN 16
     char buf[BUFSIZ], str[INET_ADDRSTRLEN];
     struct sockaddr_in serv_addr, clie_addr;
     socklen_t clie_addr_len;
+    //rset 读事件文件描述符集合，allset用来存储所有的fd
     fd_set rset, allset;
 
     listenfd = Socket(AF_INET, SOCK_STREAM, 0);
@@ -36,20 +39,24 @@ int main(int argc, char *argv[])
 
     Listen(listenfd, 1024);
     LOG("listen()")
-
+    
+    //初始listenfd即为最大的文件描述符
     maxfd = listenfd;
 
+    //maxi指向client数组的最后位置
     maxi = -1;
     for(i = 0; i < FD_SETSIZE; i++)
     {
         client[i] = -1;
     }
 
+    //构造select监控文件描述符集
     FD_ZERO(&allset);
     FD_SET(listenfd, &allset);
 
     while(1)
     {
+        //每次循环都新设置select监控信号集
         rset = allset;
         nready = select(maxfd+1, &rset, NULL, NULL, NULL);
         LOG("select()")
@@ -57,9 +64,11 @@ int main(int argc, char *argv[])
         {
             perr_exit("select error");
         }
+        //满足条件，则说明有新的客户端的请求
         if(FD_ISSET(listenfd, &rset))
         {
             clie_addr_len = sizeof(clie_addr);
+            //accept此时并不会阻塞
             connfd = Accept(listenfd, (struct sockaddr*)&clie_addr, &clie_addr_len);
             LOG("accept()")
             printf("receive from %s at PORT %d\n",
@@ -67,6 +76,7 @@ int main(int argc, char *argv[])
                     ntohs(clie_addr.sin_port));
                 for(i = 0; i < FD_SETSIZE; i++)
                 {
+                    //找最前client中没有使用的位置
                     if(client[i] < 0)
                     {
                         client[i] = connfd;
@@ -78,9 +88,10 @@ int main(int argc, char *argv[])
                 fputs("too many clients\n", stderr);
                 exit(1);
             }
-
+            
             FD_SET(connfd, &allset);
             LOG("FD_SET(connfd, &allset)")
+            //select第一次参数需要
             if(connfd > maxfd)
             {
                 maxfd = connfd;
@@ -98,9 +109,11 @@ int main(int argc, char *argv[])
         {
             if((sockfd = client[i]) < 0)
                 continue;
+            //遍历检查哪一个client有数据就绪
             if(FD_ISSET(sockfd, &rset))
             {
                 LOG("read()")
+                //当client关闭连接时，服务器也关闭连接
                 if((n = Read(sockfd, buf, sizeof(buf))) == 0)
                 {
                     Close(sockfd);
