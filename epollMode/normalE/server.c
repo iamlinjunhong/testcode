@@ -32,6 +32,7 @@ int main()
     listenfd = Socket(AF_INET, SOCK_STREAM, 0);
     LOG("Socke()")
 
+    //端口复用
     int opt = 1;
     setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
     LOG("setportopt()")
@@ -46,6 +47,7 @@ int main()
     Listen(listenfd, 128);
     LOG("Listen()")
     
+    //创建epoll模型，efd指向红黑树根节点
     efd = epoll_create(OPEN_MAX);
     LOG("epoll_create()")
     if(efd == -1){
@@ -53,7 +55,9 @@ int main()
     }
 
     tep.events = EPOLLIN;
+    //设置listenfd监听事件为读
     tep.data.fd = listenfd;
+    //将listenfd及对应的结构体设置到树上，efd可找到该树
     res = epoll_ctl(efd, EPOLL_CTL_ADD, listenfd, &tep);
     LOG("epoll_ctl()")
     if(res == -1){
@@ -61,6 +65,7 @@ int main()
     }
 
     while(1) {
+        //epoll为server阻塞监听事件，ep为struct epoll_event类型数组，OPEN_MAX为数组容量，-1表示永久阻塞
         nready = epoll_wait(efd, ep, OPEN_MAX, -1);
         LOG("epoll_wait()")
         if(nready == -1){
@@ -87,6 +92,7 @@ int main()
                 }
             }else {
                 sockfd = ep[i].data.fd;
+                //这里的读事件不会发生阻塞
                 n = Read(sockfd, buf, MAXLINE);
                 
                 if(n == 0){
@@ -104,6 +110,7 @@ int main()
                     for(j = 0; j < n; j++) {
                         buf[j] = toupper(buf[j]);
                     }
+                    //写事件可能发生阻塞
                     Write(STDOUT_FILENO, buf, n);
                     Writen(sockfd, buf, n);
                 }
