@@ -34,21 +34,16 @@ bool PlusLogger::initLog4cplus(const char* configFileName, const char* fileSuffi
 {
   std::string configPath;
 
-  logFolder_ = "";
 
-  // Form the config path $TRAF_CONF
-  char *installPath = getenv("TRAF_CONF");
+  char installPath[128] = "/home/aubin/testcode/curl/config";
   if (installPath)
   {
 	configPath = installPath;
-    // Last char may or may not be a slash.
     if (configPath[configPath.length()-1] != SLASH_C)
 	  configPath += SLASH_C;  // LCOV_EXCL_LINE :nu
   }
   else
   {
-    // Environment variable $TRAF_CONF not found.
-    // use the current directory.
     configPath = "";
   }
 
@@ -56,7 +51,6 @@ bool PlusLogger::initLog4cplus(const char* configFileName, const char* fileSuffi
     configPath = configFileName;
   else
     configPath += configFileName;
-
 
   try
   {
@@ -75,7 +69,6 @@ bool PlusLogger::initLog4cplus(const char* configFileName, const char* fileSuffi
     return true;
 
   }
-  //catch (log4cxx::ConfigureFailure e)
   catch (std::exception e)
   {
     return false;
