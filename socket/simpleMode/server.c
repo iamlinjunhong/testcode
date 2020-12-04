@@ -6,8 +6,17 @@
 #include <ctype.h>
 #include <arpa/inet.h>
 #include <string.h>
-
-#define SERV_IP "10.13.30.143"
+#include <netinet/in.h>
+#include <netdb.h>
+#include <ifaddrs.h>
+#include <time.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <sys/ioctl.h>
+#include <stdarg.h>
+#include <fcntl.h>
+#include <fcntl.h>
+#define SERV_IP "192.168.100.193"
 #define SREV_PORT 6666 
 
 int main()
@@ -17,11 +26,12 @@ int main()
     struct sockaddr_in serv_addr;
     struct sockaddr_in clie_addr;
     socklen_t clie_addr_len, clie_IP_len;
-    char buf[BUFSIZ], clie_IP[BUFSIZ];
+    char buf[20], clie_IP[BUFSIZ];
     int n;
     int i;
     int ret;
-
+    int t = 0;
+    int len;
     lfd = socket(AF_INET, SOCK_STREAM, 0);
     if(-1 == lfd)
     {
@@ -59,19 +69,42 @@ int main()
         exit(1);
     }
 
+    int keepIdle = 1;
+    int keepInterval = 1;
+    int keepCount = 1;
+    setsockopt(listenfd, SOL_TCP, TCP_KEEPIDLE, (void *)&keepIdle, sizeof(keepIdle));
+    setsockopt(listenfd, SOL_TCP, TCP_KEEPINTVL, (void *)&keepInterval, sizeof(keepInterval));
+    setsockopt(listenfd, SOL_TCP, TCP_KEEPCNT, (void *)&keepCount, sizeof(keepCount));
+
+   i/* int error = 0;
+    int isKeepalive = 1;
+    int keepaliveIdle = 1;
+    int keepaliveInterval = 1;
+    int keepCount = 1;
+    error += setsockopt(cfd, SOL_SOCKET, SO_KEEPALIVE, (void *)&isKeepalive , sizeof(isKeepalive));
+    error += setsockopt(cfd, SOL_SOCKET, TCP_KEEPIDLE, (void*)&keepaliveIdle , sizeof(keepaliveIdle )); 
+    error += setsockopt(cfd, SOL_SOCKET, TCP_KEEPINTVL, (void *)&keepaliveInterval , sizeof(keepaliveInterval ));                                                                                              
+    error += setsockopt(cfd, SOL_SOCKET, TCP_KEEPCNT, (void *)&keepCount , sizeof(keepCount )); 
+    if (error != 0){ 
+        printf("error----------------------\n");
+    }*/
+ 
 
     inet_ntop(AF_INET, &clie_addr.sin_addr.s_addr, clie_IP, sizeof(clie_IP));
     printf("client IP:%s, client port:%d\n", clie_IP, ntohs(clie_addr.sin_port));
-    while(1)
+    len = 0;
+    while(len < 20)
     {
-        n = read(cfd, buf, sizeof(buf));
-        printf("Before: %s", buf);
-        for(i = 0; i < n; i++)
+        printf("this is %d time recv\n", t++);
+        n = recv(cfd, buf, 2, 0);
+        if(n < 0) break;
+       /* for(i = 0; i < n; i++)
         {
-            buf[i] = toupper(buf[i]);
-        }
-        printf("After: %s", buf);
-        write(cfd, buf, n);
+           buf[i] = toupper(buf[i]);
+        }*/
+        len += 2;
+        printf("recv: %s\n", buf);
+        printf("len = %d\n", len);
     }
     close(lfd);
     close(cfd);

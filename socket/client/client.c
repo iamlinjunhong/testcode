@@ -32,7 +32,7 @@ int main()
 
     while(1){
         fgets(buf, sizeof(buf), stdin);   //hello world ->fgets->hello world\n\0
-        Write(cfd, buf, strlen(buf));
+        send(cfd, buf, strlen(buf), 0);
         n = read(cfd, buf, sizeof(buf));
         Write(STDOUT_FILENO, buf, n);
     }

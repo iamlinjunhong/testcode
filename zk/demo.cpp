@@ -7,6 +7,8 @@ int main()
     ZKClient *zk_client = new ZKClient() ;
     //ZooKeeper的IP:PORT
     char port[] = "10.13.30.142:2181,10.13.30.143:2181,10.13.30.144:2181";
+
+    //char port[] = "192.168.100.193:2181";
     ret = zk_client->ZK_connect(port);
     if(ret)
     {
@@ -15,8 +17,8 @@ int main()
     }
     printf("连接zookeeper成功\n");
  
- 
-    char path[] = "/test2";
+
+    char path[] = "/test";
     char value[] = "the node is create by lsf";
     ret = zk_client->ZK_create(path,value);
     if(0 > ret)
@@ -27,7 +29,7 @@ int main()
         printf("此node已经存在\n");
  
  
-    char buffer[512];
+    char buffer[1024];
     while(1) {
         memset(buffer,0,sizeof(buffer));
         ret = zk_client->ZK_get(path,buffer);
@@ -39,6 +41,8 @@ int main()
             printf("此node不存在\n");
         sleep(2);
     }
+    
+
     char setbuf[] = "change by lsf";
     ret = zk_client->ZK_set(path,setbuf);
     if(0 > ret)
