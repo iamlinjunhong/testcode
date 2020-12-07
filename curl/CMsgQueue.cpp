@@ -14,7 +14,7 @@ bool CMsgQueue::Ready() {  // if not read bolock
 int CMsgQueue::Size() {
     return size;
 }
-void CMsgQueue::Push(string  data) {
+void CMsgQueue::Push(string data) {
     pthread_mutex_lock(&lock);
     string * tmp = new string(data);
     q.push(tmp);

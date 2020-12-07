@@ -84,7 +84,7 @@ CURLcode CommonTools::HttpGet(const std::string & strUrl, std::string & strRespo
 }
 
 CURLcode CommonTools::HttpPost(const std::string & strUrl, std::string szJson, std::string & strResponse, int nTimeout) {
-    CURLcode res, ret;
+    CURLcode res;
     char szJsonData[1024];
     memset(szJsonData, 0, sizeof(szJsonData));
     strcpy(szJsonData, szJson.c_str());
@@ -94,27 +94,22 @@ CURLcode CommonTools::HttpPost(const std::string & strUrl, std::string szJson, s
         return CURLE_FAILED_INIT;
     }
     
-    ret = curl_easy_setopt(pCURL, CURLOPT_URL, strUrl.c_str());
+    curl_easy_setopt(pCURL, CURLOPT_URL, strUrl.c_str());
 
-    ret = curl_easy_setopt(pCURL, CURLOPT_POST, 1L);
+    curl_easy_setopt(pCURL, CURLOPT_POST, 1L);
 
     headers = curl_slist_append(headers,"content-type:application/json");
 
-    ret = curl_easy_setopt(pCURL, CURLOPT_HTTPHEADER, headers);
-
-    ret = curl_easy_setopt(pCURL, CURLOPT_POSTFIELDS, szJsonData);
-
-    ret = curl_easy_setopt(pCURL, CURLOPT_TIMEOUT, nTimeout);
-
-    ret = curl_easy_setopt(pCURL, CURLOPT_WRITEFUNCTION, CommonTools::receive_data);
-
-    ret = curl_easy_setopt(pCURL, CURLOPT_WRITEDATA, (void*)&strResponse);
+    curl_easy_setopt(pCURL, CURLOPT_HTTPHEADER, headers);
+    curl_easy_setopt(pCURL, CURLOPT_POSTFIELDS, szJsonData);
+    curl_easy_setopt(pCURL, CURLOPT_TIMEOUT, nTimeout);
+    curl_easy_setopt(pCURL, CURLOPT_WRITEFUNCTION, CommonTools::receive_data);
+    curl_easy_setopt(pCURL, CURLOPT_WRITEDATA, (void*)&strResponse);
 
     res = curl_easy_perform(pCURL);
 
     curl_easy_cleanup(pCURL);
-    
-    curl_slist_free_all (headers);
+    curl_slist_free_all(headers);
 
     return res;
 }

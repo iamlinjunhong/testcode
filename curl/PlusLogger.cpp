@@ -36,19 +36,12 @@ bool PlusLogger::initLog4cplus(const char* configFileName, const char* fileSuffi
 
 
   char installPath[128] = "/home/aubin/testcode/curl/config";
-  if (installPath)
-  {
-	configPath = installPath;
-    if (configPath[configPath.length()-1] != SLASH_C)
-	  configPath += SLASH_C;  // LCOV_EXCL_LINE :nu
-  }
-  else
-  {
-    configPath = "";
-  }
+  configPath = installPath;
+  if (configPath[configPath.length()-1] != SLASH_C)
+      configPath += SLASH_C;  // LCOV_EXCL_LINE :nu
 
   if (configFileName[0] == SLASH_C)
-    configPath = configFileName;
+      configPath = configFileName;
   else
     configPath += configFileName;
 

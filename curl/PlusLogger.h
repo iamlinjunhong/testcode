@@ -18,6 +18,26 @@ using namespace std;
 using namespace log4cplus;
 using namespace log4cplus::helpers;
 
+#define PT_INFO(...) do {                         \
+        char tmp[4096];                             \
+        snprintf(tmp, sizeof(tmp), ##__VA_ARGS__);  \
+        PlusLogger::log("PT", PLUS_INFO, "%s", tmp);\
+} while(0)
+
+#define PT_WARN(...) do {                         \
+        char tmp[4096];                             \
+        snprintf(tmp, sizeof(tmp), ##__VA_ARGS__);  \
+        PlusLogger::log("PT", PLUS_WARN, "%s", tmp);\
+} while(0)
+
+#define PT_ERROR(...) do {                         \
+        char tmp[4096];                             \
+        snprintf(tmp, sizeof(tmp), ##__VA_ARGS__);  \
+        PlusLogger::log("PT", PLUS_ERROR, "%s", tmp);\
+} while(0)
+
+
+
 /**
  * \file
  * Contains the PlusLogger class and some defines to facilitate logging requests.
