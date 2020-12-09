@@ -1,0 +1,27 @@
+[2020-12-09 15:50:25.611] [INFO] [PT] [PID:93703] Initialize log4cplus successfully!
+[2020-12-09 15:50:25.611] [INFO] [PT] [PID:93703] Mapping mxosrvrs_1_2020-12-03
+[2020-12-09 15:50:25.613] [INFO] [PT] [PID:93703] The current nums of qid is 7986
+[2020-12-09 15:50:25.613] [INFO] [PT] [PID:93703] That would be 1 ODBC client to connect
+[2020-12-09 15:50:25.713] [ERROR] [PT] [PID:93703] ODBC connect fail, exit
+[2020-12-09 15:50:59.540] [INFO] [PT] [PID:93836] Initialize log4cplus successfully!
+[2020-12-09 15:50:59.540] [INFO] [PT] [PID:93836] Mapping mxosrvrs_1_2020-12-09
+[2020-12-09 15:50:59.543] [ERROR] [PT] [PID:93836] Get total qid count fail, exit
+[2020-12-09 15:51:14.829] [INFO] [PT] [PID:93911] Initialize log4cplus successfully!
+[2020-12-09 15:51:14.829] [INFO] [PT] [PID:93911] Mapping mxosrvrs_1_2020-12-09
+[2020-12-09 15:51:14.831] [INFO] [PT] [PID:93911] The current nums of qid is 6225
+[2020-12-09 15:51:14.831] [INFO] [PT] [PID:93911] That would be 2 ODBC client to connect
+[2020-12-09 15:51:15.031] [ERROR] [PT] [PID:93911] ODBC connect fail, exit
+[2020-12-09 15:57:34.350] [INFO] [PT] [PID:109228] Initialize log4cplus successfully!
+[2020-12-09 15:57:34.350] [INFO] [PT] [PID:109228] Mapping mxosrvrs_1_2020-12-09
+[2020-12-09 15:57:34.392] [INFO] [PT] [PID:109228] The current nums of qid is 6232
+[2020-12-09 15:57:34.392] [INFO] [PT] [PID:109228] That would be 2 ODBC client to connect
+[2020-12-09 15:57:34.521] [INFO] [PT] [PID:109228] ODBC Connect successfully
+[2020-12-09 15:57:34.592] [INFO] [PT] [PID:109228] Start pick trash successfully
+[2020-12-09 15:57:35.151] [INFO] [PT] [PID:109228] ODBC Connect successfully
+[2020-12-09 16:05:36.847] [INFO] [PT] [PID:112592] Initialize log4cplus successfully!
+[2020-12-09 16:05:36.847] [INFO] [PT] [PID:112592] Mapping mxosrvrs_1_2020-12-09
+[2020-12-09 16:05:36.849] [INFO] [PT] [PID:112592] The current nums of qid is 6232
+[2020-12-09 16:05:36.849] [INFO] [PT] [PID:112592] That would be 2 ODBC client to connect
+[2020-12-09 16:05:36.991] [INFO] [PT] [PID:112592] ODBC Connect successfully
+[2020-12-09 16:05:37.049] [INFO] [PT] [PID:112592] Start pick trash successfully
+[2020-12-09 16:05:37.099] [INFO] [PT] [PID:112592] ODBC Connect successfully
